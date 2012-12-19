@@ -1,0 +1,25 @@
+== Installation ==
+
+Phusion Passenger can run in a wide variety of operating systems and system configurations, and thus can be installed in multiple ways. To be more specific, there are multiple ways to *install the Phusion Passenger files* and multiple ways to *integrate Phusion Passenger into the system*. These two concepts will be explained later.
+
+Most users will be satisfied with the generic installation instructions, but some users may prefer OS-specific installation instructions.
+
+=== Generic installation method: via RubyGems ===
+
+=== Generic installation method: via tarball ===
+
+=== Installing on Ubuntu ===
+
+=== Installing on OS X Server: Mountain Lion ===
+
+=== Locating the Apache configuration file ===
+
+=== Upgrading ===
+
+=== Downgrading ===
+
+=== Disabling without uninstalling ===
+
+=== Uninstalling ===
+
+=== Moving ===
