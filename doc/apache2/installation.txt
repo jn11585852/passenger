@@ -1,11 +1,96 @@
 == Installation ==
 
-Phusion Passenger can run in a wide variety of operating systems and system configurations, and thus can be installed in multiple ways. To be more specific, there are multiple ways to *install the Phusion Passenger files* and multiple ways to *integrate Phusion Passenger into the system*. These two concepts will be explained later.
+The Phusion Passenger installation process consists of two steps:
 
-Most users will be satisfied with the generic installation instructions, but some users may prefer OS-specific installation instructions.
+1. The *obtainment step*, where you download the Phusion Passenger files puts them somewhere on your system. This can be done through downloading the source tarball, installing the Ruby gem or installing a native OS package via APT or YUM.
+2. The *integration step*, where you configure Phusion Passenger so that it works properly with other system components such as Apache, Nginx, Ruby, Python, etc.
 
+Because Phusion Passenger is designed to run in a wide variety of operating systems and configurations, both steps can be done in multiple ways. Most users will be satisfied with the generic installation instructions which covers both steps, but some users may prefer OS-specific installation instructions in order to integrate better.
+
+If you are not familiar with system administration and do not understand all the choices, then we recommend you to go with the <<rubygems_generic_install,RubyGems generic installation method>> (if you're a Ruby user) or the <<tarball_generic_install,tarball generic installation method>> (if you're not a Ruby user).
+
+[[rubygems_generic_install]]
 === Generic installation method: via RubyGems ===
 
+==== Step 1: figuring out whether your Ruby is installed the home directory or system-wide ====
+
+Ruby may either be installed in the home directory, or system-wide. If it's installed system-wide, you need to switch to a root prompt first. To find out which case applies, run the following command to find out where the 'gem' command is:
+
+--------------
+which gem
+--------------
+
+Do you see a filename that references '/home' or '/Users'? If so then your Ruby interpreter is installed in your home directory and you can proceed to step 2. Otherwise, you need to switch to a root prompt by running one of the following commands:
+
+* Are you using RVM? Run 'rvmsudo -s'.
+* Are you not using RVM, or do you not know what RVM is? Run 'sudo -s'.
+* Is 'sudo' not installed on your system? Run 'su -c bash'.
+
+You must maintain this root prompt throughout this installation guide.
+
+==== Step 2: install the gem ====
+
+Install the gem to obtain the Phusion Passenger files:
+
+----------------------
+gem install passenger
+----------------------
+
+==== Step 3: add the RubyGems bin directory to your $PATH ====
+
+If you all the following are applicable to you:
+
+- You are on Debian or Ubuntu,
+- and you installed RubyGems through APT,
+- and your Ruby interpreter is installed system-wide,
+
+...then you must ensure that the RubyGems bin directory is in your $PATH. If one of the above conditions do not apply to you, then you can skip this step.
+
+Open /etc/bash.bashrc or /etc/bashrc (whichever is available) and add the following to the end of the file. Also run this command in your terminal.
+
+-----------------------------------------
+export PATH=$PATH:/var/lib/gems/1.8/bin
+-----------------------------------------
+
+==== Step 4: loosen permissions ====
+
+If in step 1 you determined that your Ruby interpreter is installed in your home directory, then you need to make sure that the Phusion Passenger gem directory is accessible by your web server. To do that, you must ensure that the Phusion Passenger gem directory, as well as all other directories, have the world-executable permission.
+
+To find out where the Phusion Passenger gem directory is, run:
+
+-------------------------
+passenger-config --root
+-------------------------
+
+Suppose that the above command outputs '/home/phusion/.rvm/gems/ruby-1.9.3-p362/gems/passenger-x.x.x'. Then you 'chmod o+x' all directories up until '/home/phusion':
+
+-------------------------
+chmod o+x /home/phusion/.rvm/gems/ruby-1.9.3-p362/gems/passenger-x.x.x
+chmod o+x /home/phusion/.rvm/gems/ruby-1.9.3-p362/gems
+chmod o+x /home/phusion/.rvm/gems/ruby-1.9.3-p362
+chmod o+x /home/phusion/.rvm/gems
+chmod o+x /home/phusion/.rvm
+chmod o+x /home/phusion
+-------------------------
+
+==== Step 5: run the Phusion Passenger installer ====
+
+ifdef::apache[]
+The Phusion Passenger gem only contains source files. They must be compiled into binaries. To do that, run the following command:
+
+------------------------
+passenger-install-apache2-module
+------------------------
+
+This command will i.
+endif::[]
+ifdef::nginx[]
+------------------------
+passenger-install-nginx-module
+------------------------
+endif::[]
+
+[[tarball_generic_install]]
 === Generic installation method: via tarball ===
 
 === Installing on Ubuntu ===
